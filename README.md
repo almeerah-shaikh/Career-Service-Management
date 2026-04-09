@@ -81,5 +81,10 @@
    - Admin: `http://127.0.0.1:5000/admin_login` (Admin/Admin123)
 
 ---
+Images:
+<img width="1296" height="644" alt="image" src="https://github.com/user-attachments/assets/1ecc980b-f2ad-4219-8390-659cf9e11072" />
+<img width="1283" height="649" alt="image" src="https://github.com/user-attachments/assets/2d4ae69a-3226-4065-af45-ee7acbc0bf9a" />
+<img width="1339" height="648" alt="image" src="https://github.com/user-attachments/assets/b74719e5-4fa5-4f12-8b70-41c6a5b863b3" />
 
-**Designed for Excellence. Powered by AI. Built by Antigravity.**
+
+
