@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Events - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);"><i class="fas fa-calendar-plus"></i> Manage <span class="mint-text">Workshops & Events</span></h1>
+    <p style="opacity: 0.8;">Create and remove events and webinars for the student community.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: 1fr 2fr; align-items: start;">
+    <div class="card" style="border-top: 5px solid var(--fuchsia);">
+        <h3 style="margin-bottom: 2rem;"><i class="fas fa-plus"></i> Add New Event</h3>
+        <form method="POST">
+            <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Event Title</label>
+                <input type="text" name="title" placeholder="E.g. Resume Building Workshop" required style="border-radius: 8px;">
+            </div>
+            
+            <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Event Date</label>
+                <input type="date" name="date" required style="border-radius: 8px;">
+            </div>
+            
+            <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Event Time Slot</label>
+                <input type="time" name="time" required style="border-radius: 8px;">
+            </div>
+            
+            <div class="form-group" style="text-align: left; margin-bottom: 1.5rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Detailed Description</label>
+                <textarea name="description" placeholder="E.g. This session will cover ATS keyword optimization and structural tips..." required style="height: 150px; border-radius: 8px;"></textarea>
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%; border-radius: 10px; padding: 1rem;">Publish Event</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 2rem;"><i class="fas fa-calendar-check" style="color: var(--mint);"></i> Existing Events</h3>
+        
+        <div class="events-list">
+            {% for event in events %}
+                <div class="small-box" style="margin-bottom: 1.5rem; padding: 1.5rem; border-left: 4px solid var(--mint);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem; color: var(--charcoal); font-size: 1.1rem;">{{ event.title }}</h4>
+                            <p style="font-size: 0.85rem; font-weight: 700; color: var(--mint); margin-bottom: 1rem;">
+                                <i class="fas fa-calendar-day"></i> {{ event.date }} | <i class="fas fa-clock"></i> {{ event.time }}
+                            </p>
+                            <p style="font-size: 0.95rem; line-height: 1.6; opacity: 0.8;">{{ event.description }}</p>
+                        </div>
+                        <a href="/delete_event/{{ event.id }}" class="btn danger-btn" style="padding: 0.4rem 1rem; font-size: 0.85rem; border-radius: 5px;" onclick="return confirm('Delete this event listing?')">Delete Posting</a>
+                    </div>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 4rem 0; opacity: 0.5;">
+                    <i class="fas fa-calendar-times fa-3x" style="margin-bottom: 1rem;"></i>
+                    <p>No events added yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

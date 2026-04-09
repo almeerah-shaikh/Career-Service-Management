@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Recommendations - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);">Smart <span class="mint-text">Career Recommendations</span></h1>
+    <p style="opacity: 0.8;">Our AI algorithm matches your profile and interests with the best opportunities and learning paths.</p>
+</div>
+
+{% if not recommended_jobs and not skill_suggestions %}
+    <div class="card" style="text-align: center; padding: 4rem; border-top: 5px solid var(--fuchsia);">
+        <i class="fas fa-magic fa-4x" style="color: var(--mint); margin-bottom: 1.5rem; opacity: 0.5;"></i>
+        <h3>No recommendations yet!</h3>
+        <p>Complete your profile and career interests to get personalized suggestions.</p>
+        <a href="/profile" class="btn" style="margin-top: 2rem;">Complete Profile</a>
+    </div>
+{% else %}
+    <div class="cards" style="grid-template-columns: 2fr 1fr; align-items: start;">
+        <div class="card">
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-briefcase" style="color: var(--mint);"></i> Recommended Jobs & Internships</h3>
+            <div class="recommendations-list">
+                {% for job in recommended_jobs %}
+                    <div class="small-box" style="margin-bottom: 1.5rem; border-left: 4px solid var(--mint); padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem; color: var(--charcoal);">{{ job.title }}</h4>
+                                <p style="font-weight: 700; color: var(--mint); font-size: 0.9rem;">{{ job.company }}</p>
+                            </div>
+                            <a href="/jobs" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Job</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <p style="opacity: 0.7;">No specific jobs matched your profile yet. Keep exploring!</p>
+                {% endfor %}
+            </div>
+            
+            <a href="/jobs" class="mint-text" style="font-weight: 600; display: block; margin-top: 2rem; text-align: center;">Explore All Available Jobs <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card" style="border-top: 5px solid var(--fuchsia);">
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-graduation-cap" style="color: var(--fuchsia);"></i> Skills Gap Analysis</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 1.5rem; opacity: 0.7;">Based on your career interests, we recommend learning these skills to increase your hiring probability.</p>
+            
+            <ul style="padding-left: 0;">
+                {% for skill in skill_suggestions %}
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1rem;">
+                        <div style="width: 40px; height: 40px; background: var(--light-gray); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--mint);">
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span style="font-weight: 600; color: var(--charcoal);">{{ skill }}</span>
+                    </li>
+                {% else %}
+                    <li style="margin-bottom: 1rem; opacity: 0.7;">You're doing great! Keep building your current skill set.</li>
+                {% endfor %}
+            </ul>
+            
+            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--light-gray); border-radius: 12px; text-align: center;">
+                <p style="font-size: 0.85rem; font-weight: 600;">Want more detailed guidance?</p>
+                <a href="/appointments" class="btn" style="margin-top: 1rem; font-size: 0.85rem; padding: 0.5rem 1.2rem;">Book Counselor</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

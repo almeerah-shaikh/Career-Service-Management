@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+    <div>
+        <h1 style="color: var(--charcoal);">Hello, <span class="mint-text">{{ session['user_name'] }}</span></h1>
+        <p style="opacity: 0.8;">Welcome to your personalized career dashboard. Track your journey below.</p>
+    </div>
+    <a href="/profile" class="btn" style="padding: 0.5rem 1rem; border-radius: 5px;">Edit Profile</a>
+</div>
+
+<div class="cards">
+    <div class="card stat-card" style="border-left-color: var(--mint);">
+        <i class="fas fa-briefcase fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+        <h3>{{ total_jobs }}</h3>
+        <p>Available Jobs</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--fuchsia);">
+        <i class="fas fa-paper-plane fa-2x" style="color: var(--fuchsia); margin-bottom: 1rem;"></i>
+        <h3>{{ total_applications }}</h3>
+        <p>Your Applications</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--mint);">
+        <i class="fas fa-handshake fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+        <h3>{{ total_appointments }}</h3>
+        <p>Your Appointments</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--fuchsia);">
+        <i class="fas fa-calendar-check fa-2x" style="color: var(--fuchsia); margin-bottom: 1rem;"></i>
+        <h3>{{ total_events }}</h3>
+        <p>Upcoming Events</p>
+    </div>
+</div>
+
+<div style="margin-top: 4rem;">
+    <h2 style="margin-bottom: 2rem;">Career <span class="mint-text">Power Tools</span></h2>
+    <div class="cards">
+        <a href="/jobs" class="card link-card">
+            <i class="fas fa-search"></i>
+            <p>Browse & Apply</p>
+        </a>
+        <a href="/cv_checker" class="card link-card">
+            <i class="fas fa-file-invoice"></i>
+            <p>CV Score Checker</p>
+        </a>
+        <a href="/recommendations" class="card link-card">
+            <i class="fas fa-magic"></i>
+            <p>AI Recommendations</p>
+        </a>
+        <a href="/chatbot" class="card link-card">
+            <i class="fas fa-comment-dots"></i>
+            <p>Interview Chatbot</p>
+        </a>
+        <a href="/appointments" class="card link-card">
+            <i class="fas fa-user-friends"></i>
+            <p>Counseling Support</p>
+        </a>
+        <a href="/resources" class="card link-card">
+            <i class="fas fa-graduation-cap"></i>
+            <p>Resources & Learning</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

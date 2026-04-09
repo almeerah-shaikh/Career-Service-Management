@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Appointments - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);"><i class="fas fa-clock"></i> Manage <span class="mint-text">Counseling Appointments</span></h1>
+    <p style="opacity: 0.8;">Approve, reject, or update the status of student counseling requests.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: 1fr;">
+    {% for appt in appointments %}
+        <div class="card" style="display: flex; gap: 2rem; align-items: start; border-left: 5px solid var(--fuchsia);">
+            <div style="text-align: center; width: 100px;">
+                <div style="background: var(--light-gray); padding: 1rem; border-radius: 12px; margin-bottom: 0.5rem; text-align: center;">
+                    <i class="fas fa-calendar-day fa-2x" style="color: var(--mint);"></i>
+                </div>
+                <p style="font-weight: 700; font-size: 0.85rem;">{{ appt.date }}</p>
+                <p style="font-size: 0.8rem; opacity: 0.6;">{{ appt.time }}</p>
+            </div>
+            
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--charcoal);">{{ appt.name }}</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--mint);">Student ID: #{{ appt.user_id }}</p>
+                    </div>
+                    {% if appt.status == 'Pending' %}
+                        <span class="status-pill status-under-review">Pending Request</span>
+                    {% elif appt.status == 'Approved' %}
+                        <span class="status-pill status-shortlisted">Approved</span>
+                    {% elif appt.status == 'Rejected' %}
+                        <span class="status-pill status-rejected">Rejected</span>
+                    {% else %}
+                        <span class="status-pill status-applied">{{ appt.status }}</span>
+                    {% endif %}
+                </div>
+                
+                <p style="background: #fdfdfd; padding: 1.5rem; border-radius: 10px; border: 1px solid #f0f0f0; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                    <strong>Message:</strong> {{ appt.message }}
+                </p>
+                
+                <div style="display: flex; gap: 1rem; flex-direction: column;">
+                    <form action="/update_appointment_status/{{ appt.id }}/Approved" method="POST" style="display: flex; gap: 10px; width: 100%;">
+                        <input type="text" name="meeting_link" placeholder="Paste Zoom/Meet link here..." style="flex: 1; margin-bottom: 0; padding: 0.5rem; font-size: 0.85rem;">
+                        <button type="submit" class="btn" style="padding: 0.5rem 1rem; border-radius: 5px; font-size: 0.85rem;"><i class="fas fa-check"></i> Approve & Send Link</button>
+                    </form>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <form action="/update_appointment_status/{{ appt.id }}/Rejected" method="POST">
+                            <button type="submit" class="btn danger-btn" style="padding: 0.5rem 1.5rem; border-radius: 5px; font-size: 0.85rem;"><i class="fas fa-times"></i> Reject</button>
+                        </form>
+                        <a href="mailto:{{ appt.email }}" class="btn register-btn" style="padding: 0.5rem 1.5rem; border-radius: 5px; font-size: 0.85rem; border-color: var(--charcoal); color: var(--charcoal) !important;"><i class="fas fa-envelope"></i> Email Student</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <i class="fas fa-calendar-check fa-4x" style="color: var(--mint); margin-bottom: 1.5rem; opacity: 0.5;"></i>
+            <h3>No appointments pending!</h3>
+            <p>You're all caught up with the career counseling requests.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

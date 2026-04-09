@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+    <div>
+        <h1 style="color: var(--charcoal);"><i class="fas fa-user-shield"></i> Admin <span class="fuchsia-text">Control Center</span></h1>
+        <p style="opacity: 0.8;">Manage the career portal, track statistics, and oversee student engagement.</p>
+    </div>
+</div>
+
+<div class="cards">
+    <div class="card stat-card" style="border-left-color: var(--mint);">
+        <i class="fas fa-users fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+        <h3>{{ total_users }}</h3>
+        <p>Total Registered Students</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--fuchsia);">
+        <i class="fas fa-briefcase fa-2x" style="color: var(--fuchsia); margin-bottom: 1rem;"></i>
+        <h3>{{ total_jobs }}</h3>
+        <p>Active Job Postings</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--mint);">
+        <i class="fas fa-paper-plane fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+        <h3>{{ total_apps }}</h3>
+        <p>Student Applications</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--fuchsia);">
+        <i class="fas fa-calendar-check fa-2x" style="color: var(--fuchsia); margin-bottom: 1rem;"></i>
+        <h3>{{ total_appointments }}</h3>
+        <p>Counseling Sessions</p>
+    </div>
+    <div class="card stat-card" style="border-left-color: var(--mint);">
+        <i class="fas fa-bullhorn fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+        <h3>{{ total_events }}</h3>
+        <p>Workshops & Events</p>
+    </div>
+</div>
+
+<div style="margin-top: 4rem;">
+    <h2 style="margin-bottom: 2rem;">Management <span class="mint-text">Modules</span></h2>
+    <div class="cards">
+        <a href="/post_job" class="card link-card">
+            <i class="fas fa-plus-circle"></i>
+            <p>Post New Job</p>
+        </a>
+        <a href="/manage_jobs" class="card link-card">
+            <i class="fas fa-edit"></i>
+            <p>Manage Job Listings</p>
+        </a>
+        <a href="/manage_appointments" class="card link-card">
+            <i class="fas fa-clock"></i>
+            <p>Counseling Requests</p>
+        </a>
+        <a href="/manage_events" class="card link-card">
+            <i class="fas fa-calendar-plus"></i>
+            <p>Add & Edit Events</p>
+        </a>
+        <a href="/manage_users" class="card link-card">
+            <i class="fas fa-user-friends"></i>
+            <p>Directory of Users</p>
+        </a>
+        <a href="/view_applications" class="card link-card">
+            <i class="fas fa-file-invoice"></i>
+            <p>View Job Applications</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Resources - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);"><i class="fas fa-book"></i> Career <span class="mint-text">Resources</span></h1>
+    <p style="opacity: 0.8;">Explore our curated collection of guides, templates, and learning materials.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+    {% for resource in resources %}
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-left: 5px solid var(--fuchsia);">
+            <div>
+                <h3 style="margin-bottom: 1rem; color: var(--charcoal);">{{ resource.title }}</h3>
+                <span class="status-pill status-under-review" style="margin-bottom: 1.5rem; display: inline-block;">{{ resource.category }}</span>
+                <p style="font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem;">{{ resource.content }}</p>
+            </div>
+            
+            <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid #f0f0f0; text-align: center;">
+                <a href="{{ resource.link or '#' }}" class="btn" style="width: 100%; border-radius: 8px; font-size: 0.85rem;">Access Resource <i class="fas fa-external-link-alt" style="margin-left: 0.5rem;"></i></a>
+            </div>
+        </div>
+    {% else %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+            <i class="fas fa-folder-open fa-4x" style="color: var(--mint); margin-bottom: 1.5rem; opacity: 0.5;"></i>
+            <h3>No resources added yet.</h3>
+            <p>Our team is currently curating professional guides for you.</p>
+        </div>
+    {% endfor %}
+</div>
+
+<section style="margin-top: 5rem; padding: 4rem; background: var(--charcoal); border-radius: 20px; color: white; text-align: center;">
+    <h2 style="margin-bottom: 1.5rem; color: var(--mint);">Need Personalized Guidance?</h2>
+    <p style="margin-bottom: 2rem; opacity: 0.8;">If you can't find what you're looking for, our career counselors are here to help you navigate your journey.</p>
+    <a href="/appointments" class="btn" style="padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 40px;">Book a Session Now</a>
+</section>
+{% endblock %}

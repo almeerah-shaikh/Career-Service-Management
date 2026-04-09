@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Jobs - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+    <div>
+        <h1 style="color: var(--charcoal);"><i class="fas fa-briefcase"></i> Browse <span class="mint-text">Opportunities</span></h1>
+        <p style="opacity: 0.8;">Explore the latest careers, internships, and job openings.</p>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 3rem; padding: 1.5rem; background: var(--charcoal);">
+    <form method="GET" style="display: flex; gap: 1rem; align-items: center;">
+        <input type="text" name="search" placeholder="Search by title, company, or skills..." value="{{ search }}" style="margin-bottom: 0; padding: 1rem; flex: 1; border-radius: 8px;">
+        <button type="submit" class="btn" style="padding: 1rem 2rem; border-radius: 8px;"><i class="fas fa-search"></i> Search</button>
+        {% if search %}
+            <a href="/jobs" class="btn danger-btn" style="padding: 1rem 1.5rem; border-radius: 8px;"><i class="fas fa-times"></i></a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="cards">
+    {% for job in jobs %}
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 480px; position: relative; overflow: hidden; border-top: 5px solid var(--mint);">
+            <div class="job-header">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--charcoal);">{{ job.title }}</h3>
+                        <p style="color: var(--mint); font-weight: 700; font-size: 0.9rem;"><i class="fas fa-building"></i> {{ job.company }}</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.5rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1rem;">
+                    <p style="font-size: 0.85rem; background: #f8f9fa; padding: 0.3rem 0.8rem; border-radius: 12px; border: 1px solid #eee;"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</p>
+                    <p style="font-size: 0.85rem; background: #f8f9fa; padding: 0.3rem 0.8rem; border-radius: 12px; border: 1px solid #eee;"><i class="fas fa-clock"></i> Deadline: {{ job.deadline }}</p>
+                </div>
+                
+                <p style="font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem;">{{ job.description[:250] }}...</p>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="font-size: 0.85rem; margin-bottom: 0.8rem; color: var(--charcoal); opacity: 0.7;">Required Skills:</h4>
+                    <p style="font-size: 0.85rem;">{{ job.skills_required }}</p>
+                </div>
+            </div>
+            
+            <div class="job-footer" style="margin-top: auto;">
+                {% if session.get('user_id') %}
+                    {% if job.id in applied_job_ids %}
+                        <button class="btn" style="width: 100%; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;" disabled>Applied Successfully</button>
+                    {% else %}
+                        <a href="/apply_job/{{ job.id }}" class="btn" style="width: 100%; text-align: center;">Apply Now</a>
+                    {% endif %}
+                {% else %}
+                    <a href="/login" class="btn register-btn" style="width: 100%; text-align: center;">Login to Apply</a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+            <i class="fas fa-search fa-4x" style="color: var(--mint); margin-bottom: 1.5rem; opacity: 0.5;"></i>
+            <h3>No jobs found matching your search.</h3>
+            <p>Try searching with different keywords or browse all jobs.</p>
+            <a href="/jobs" class="btn" style="margin-top: 2rem;">View All Jobs</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

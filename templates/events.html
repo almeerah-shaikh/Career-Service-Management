@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Events & Workshops - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);"><i class="fas fa-calendar-alt"></i> Workshops & <span class="mint-text">Webinars</span></h1>
+    <p style="opacity: 0.8;">Join our career-focused events to build your network and skills.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+    {% for event in events %}
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-left: 5px solid var(--mint); position: relative;">
+            <div class="event-body">
+                <i class="fas fa-bullhorn fa-2x" style="color: var(--fuchsia); opacity: 0.2; position: absolute; right: 2rem; top: 2rem;"></i>
+                <h3 style="margin-bottom: 1rem; color: var(--charcoal); max-width: 80%;">{{ event.title }}</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 600; color: var(--charcoal); opacity: 0.8;">
+                    <span><i class="fas fa-calendar-day" style="color: var(--mint);"></i> {{ event.date }}</span>
+                    <span><i class="fas fa-clock" style="color: var(--mint);"></i> {{ event.time }}</span>
+                </div>
+                <p style="font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem;">{{ event.description }}</p>
+            </div>
+            
+            <div class="event-footer" style="padding-top: 1rem; border-top: 1px solid #f0f0f0; margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--mint);">Live Session</span>
+                <span class="btn" style="padding: 0.4rem 1rem; font-size: 0.85rem; border-radius: 5px; opacity: 0.4; cursor: not-allowed;">Add to Calendar</span>
+            </div>
+        </div>
+    {% else %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+            <i class="fas fa-calendar-times fa-4x" style="color: var(--mint); margin-bottom: 1.5rem; opacity: 0.5;"></i>
+            <h3>No events listed right now.</h3>
+            <p>Check back later for new workshops and career webinars!</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

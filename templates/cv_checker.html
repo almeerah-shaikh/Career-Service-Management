@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}CV Score Checker - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);">AI <span class="mint-text">CV Checker</span></h1>
+    <p style="opacity: 0.8; max-width: 600px; margin: 0.5rem auto;">Upload your resume (PDF/Word) or paste your text below to get an instant compatibility score and optimizations.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: 2fr 1fr; align-items: start;">
+    <div class="card">
+        <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-file-upload"></i> Analyze File / Text</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group" style="background: #f8fcfb; padding: 1.5rem; border-radius: 12px; border: 1px dashed var(--mint); margin-bottom: 2rem;">
+                <label style="font-weight: 700;"><i class="fas fa-upload"></i> Upload CV (PDF or DOCX)</label>
+                <input type="file" name="cv_file" style="margin-top: 10px; margin-bottom: 0;">
+                <p style="font-size: 0.75rem; margin-top: 8px; opacity: 0.6;">Maximum size: 5MB</p>
+            </div>
+            
+            <p style="text-align: center; margin-bottom: 1.5rem; font-weight: 700; opacity: 0.4;">— OR —</p>
+            
+            <textarea name="resume_text" rows="12" placeholder="Paste your CV / resume text here..." style="font-family: inherit; font-size: 0.95rem; line-height: 1.8;">{{ request.form.get('resume_text', '') }}</textarea>
+            <button type="submit" class="btn" style="width: 100%; border-radius: 10px; padding: 1.2rem;">Analyze Now</button>
+        </form>
+    </div>
+
+    <div class="card" style="text-align: center; border-left: 5px solid var(--mint); background: #fff; transform-style: preserve-3d;">
+        <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-chart-pie"></i> Deep Career Audit</h3>
+        
+        {% if score is not none %}
+            <!-- Compatibility Meter -->
+            <div style="margin-bottom: 2.5rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 800; margin-bottom: 0.5rem;">
+                    <span>Compatibility</span>
+                    <span class="mint-text">{{ score }}%</span>
+                </div>
+                <div style="height: 12px; background: #eee; border-radius: 10px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                    <div style="width: {{ score }}%; height: 100%; background: linear-gradient(to right, var(--mint), #27ae60); transition: width 1.5s ease-out; box-shadow: 0 0 10px rgba(62,180,137,0.5);"></div>
+                </div>
+            </div>
+
+            <!-- 3-Pillar Results -->
+            <div style="text-align: left; display: flex; flex-direction: column; gap: 1.5rem;">
+                
+                <!-- PILLAR 1: APPRECIATION -->
+                <div class="glass-card" style="padding: 1.2rem; border-left: 5px solid #27ae60; background: #f0fdf4 !important;">
+                    <h5 style="color: #166534; margin-bottom: 0.5rem;"><i class="fas fa-award"></i> The Good (Appreciation)</h5>
+                    <p style="font-size: 0.85rem; color: #166534; font-style: italic; opacity: 0.9;">"{{ appreciation }}"</p>
+                </div>
+
+                <!-- PILLAR 2: MISTAKES -->
+                {% if mistakes %}
+                <div class="glass-card" style="padding: 1.2rem; border-left: 5px solid #e74c3c; background: #fff5f5 !important;">
+                    <h5 style="color: #c0392b; margin-bottom: 1rem;"><i class="fas fa-times-circle"></i> Room for Growth (Mistakes)</h5>
+                    <ul style="padding-left: 0; margin-bottom: 0;">
+                        {% for mistake in mistakes %}
+                            <li style="margin-bottom: 0.6rem; font-size: 0.85rem; color: #c0392b; list-style: none;">
+                                <i class="fas fa-angle-right"></i> {{ mistake }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- PILLAR 3: STRATEGY -->
+                <div class="glass-card" style="padding: 1.2rem; border-left: 5px solid var(--fuchsia); background: #fdf2ff !important;">
+                    <h5 style="color: #701a75; margin-bottom: 1rem;"><i class="fas fa-chess-knight"></i> The Strategy (Next Steps)</h5>
+                    <ul style="padding-left: 0; margin-bottom: 0;">
+                        {% for item in suggestions %}
+                            <li style="margin-bottom: 0.6rem; font-size: 0.85rem; color: #701a75; list-style: none;">
+                                <i class="fas fa-arrow-circle-right"></i> {{ item }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <a href="/download_renewed_cv" class="btn" style="width: 100%; border-radius: 12px; padding: 1.2rem; background: var(--charcoal); color: var(--mint); border: 2px solid var(--mint); margin-top: 1rem;">
+                    <i class="fas fa-magic"></i> Download Renewed CV (.docx)
+                </a>
+            </div>
+        {% else %}
+            <div style="padding: 6rem 0; opacity: 0.5;">
+                <i class="fas fa-microchip fa-4x" style="margin-bottom: 1.5rem; animation: pulse 2s infinite;"></i>
+                <p>Upload a file to begin Deep AI Audit...</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<section style="margin-top: 4rem; text-align: center;">
+    <h3 style="margin-bottom: 2rem;">How to improve your <span class="fuchsia-text">Score?</span></h3>
+    <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="card" style="padding: 1.5rem;">
+            <i class="fas fa-key fa-lg" style="color: var(--mint); margin-bottom: 1rem;"></i>
+            <h4 style="margin-bottom: 0.5rem;">Keywords</h4>
+            <p style="font-size: 0.85rem;">Use industry-specific keywords like 'Data Analysis', 'Management', or 'React'.</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+            <i class="fas fa-bolt fa-lg" style="color: var(--fuchsia); margin-bottom: 1rem;"></i>
+            <h4 style="margin-bottom: 0.5rem;">Action Verbs</h4>
+            <p style="font-size: 0.85rem;">Start bullet points with 'Led', 'Developed', or 'Spearheaded'.</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+            <i class="fas fa-align-left fa-lg" style="color: var(--mint); margin-bottom: 1rem;"></i>
+            <h4 style="margin-bottom: 0.5rem;">Formatting</h4>
+            <p style="font-size: 0.85rem;">Keep it clean, use bullet points, and avoid large text blocks.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

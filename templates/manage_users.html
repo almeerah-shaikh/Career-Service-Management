@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);"><i class="fas fa-users"></i> Student <span class="mint-text">Directory</span></h1>
+    <p style="opacity: 0.8;">View and manage registered student profiles and their career progress.</p>
+</div>
+
+<div class="cards">
+    {% for user in users %}
+        <div class="card" style="display: flex; gap: 2rem; align-items: start; border-top: 5px solid var(--mint);">
+            <div style="text-align: center; width: 100px;">
+                {% if user.profile_image %}
+                    <img src="{{ url_for('static', filename='profiles/' + user.profile_image) }}" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--mint);">
+                {% else %}
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--light-gray); display: flex; align-items: center; justify-content: center; margin: 0 auto; color: var(--charcoal); border: 2px dashed var(--mint);">
+                        <i class="fas fa-user-circle fa-2x"></i>
+                    </div>
+                {% endif %}
+                <p style="font-weight: 700; font-size: 0.85rem; margin-top: 1rem;">ID: #{{ user.id }}</p>
+            </div>
+            
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="margin-bottom: 0.3rem; color: var(--charcoal);">{{ user.name }}</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--fuchsia);">{{ user.email }}</p>
+                    </div>
+                    {% if user.resume %}
+                        <span class="status-pill status-shortlisted">Resume Uploaded</span>
+                    {% else %}
+                        <span class="status-pill status-under-review">Resume Pending</span>
+                    {% endif %}
+                </div>
+                
+                <div class="profile-details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <p style="font-size: 0.8rem; font-weight: 700; opacity: 0.6; text-transform: uppercase;">Department / Sem</p>
+                        <p style="font-size: 0.95rem; font-weight: 600;">{{ user.department or 'N/A' }} ({{ user.semester or 'N/A' }})</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 0.8rem; font-weight: 700; opacity: 0.6; text-transform: uppercase;">Career Interest</p>
+                        <p style="font-size: 0.95rem; font-weight: 600;">{{ user.career_interest or 'N/A' }}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 0.8rem; font-weight: 700; opacity: 0.6; text-transform: uppercase;">Skills</p>
+                    <p style="font-size: 0.9rem;">{{ user.skills or 'No skills listed yet.' }}</p>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; padding-top: 1rem; border-top: 1px solid #f0f0f0;">
+                    <a href="mailto:{{ user.email }}" class="btn" style="padding: 0.4rem 1.5rem; border-radius: 5px; font-size: 0.85rem;"><i class="fas fa-envelope"></i> Send Email</a>
+                    {% if user.resume %}
+                        <a href="{{ url_for('static', filename='resumes/' + user.resume) }}" class="btn register-btn" style="padding: 0.4rem 1.5rem; border-radius: 5px; font-size: 0.85rem; border-color: var(--charcoal); color: var(--charcoal) !important;" target="_blank"><i class="fas fa-file-download"></i> View CV</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+            <i class="fas fa-user-times fa-4x" style="color: var(--mint); margin-bottom: 1.5rem; opacity: 0.5;"></i>
+            <h3>No students found.</h3>
+            <p>Once students register, their profiles will appear here for management.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Home - CareerbyAL{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <!-- Moving Books -->
+        <i class="fas fa-book floating-book" style="top: 20%; right: 15%; animation-delay: 0s;"></i>
+        <i class="fas fa-book-open floating-book" style="bottom: 25%; left: 12%; animation-delay: -3s;"></i>
+        <i class="fas fa-bookmark floating-book" style="top: 40%; left: 20%; animation-delay: -6s;"></i>
+        
+        <div style="position: relative; z-index: 1; transform: translateZ(50px);">
+            <h1 style="text-shadow: 0 10px 20px rgba(0,0,0,0.5);">Navigate Your <span class="mint-text">Career</span> Future</h1>
+            <p style="margin-bottom: 3rem;">Get AI-powered job recommendations, score your CV, and connect with top counselors at CareerbyAL.</p>
+            <div class="hero-btns">
+                {% if not session.get('user_id') %}
+                    <a href="/register" class="btn">Get Started Now</a>
+                    <a href="/login" class="btn-outline">Login</a>
+                {% else %}
+                    <a href="/dashboard" class="btn">Go to Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Why Choose <span class="mint-text">Career</span>byAL?</h2>
+        <div class="cards">
+            <a href="/cv_checker" class="card clickable-card">
+                <i class="fas fa-robot fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+                <h3>AI CV Checker</h3>
+                <p>Get instant feedback and a compatibility score for your resume based on industry standards.</p>
+            </a>
+            <a href="/jobs" class="card clickable-card">
+                <i class="fas fa-bullseye fa-2x" style="color: var(--fuchsia); margin-bottom: 1rem;"></i>
+                <h3>Smart Matching</h3>
+                <p>Our algorithms match your skills with the best jobs and internships available.</p>
+            </a>
+            <a href="/appointments" class="card clickable-card">
+                <i class="fas fa-user-tie fa-2x" style="color: var(--mint); margin-bottom: 1rem;"></i>
+                <h3>Counseling</h3>
+                <p>Book one-on-one sessions with career experts to plan your professional growth.</p>
+            </a>
+        </div>
+    </section>
+
+    {% if session.get('user_id') and matched_jobs %}
+    <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Jobs <span class="mint-text">Matched for You</span></h2>
+            <a href="/recommendations" class="fuchsia-text" style="font-weight: 600;">Personalized Recommendations <i class="fas fa-magic"></i></a>
+        </div>
+        <div class="cards">
+            {% for job in matched_jobs %}
+                <div class="card" style="border-top: 4px solid var(--mint);">
+                    <h3 style="margin-bottom: 0.5rem;">{{ job.title }}</h3>
+                    <p style="color: var(--mint); font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem;"><i class="fas fa-building"></i> {{ job.company }}</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;">{{ job.description[:100] }}...</p>
+                    <a href="/jobs" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Match</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Latest <span class="fuchsia-text">Jobs</span></h2>
+            <a href="/jobs" class="mint-text" style="font-weight: 600;">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="cards">
+            {% for job in jobs %}
+                <div class="card">
+                    <h3>{{ job.title }}</h3>
+                    <p><strong><i class="fas fa-building"></i> {{ job.company }}</strong></p>
+                    <p><i class="fas fa-map-marker-alt"></i> {{ job.location }}</p>
+                    <p style="margin: 1rem 0; font-size: 0.9rem; opacity: 0.8;">{{ job.description[:100] }}...</p>
+                    <a href="/jobs" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Learn More</a>
+                </div>
+            {% else %}
+                <p>No jobs posted yet. Check back soon!</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 style="margin-bottom: 2rem;">Upcoming <span class="mint-text">Events</span></h2>
+        <div class="cards">
+            {% for event in events %}
+                <div class="card" style="border-top: 4px solid var(--fuchsia);">
+                    <h3>{{ event.title }}</h3>
+                    <p><i class="fas fa-calendar"></i> {{ event.date }} | {{ event.time }}</p>
+                    <p style="margin-top: 1rem;">{{ event.description[:80] }}...</p>
+                </div>
+            {% else %}
+                <p>Stay tuned for workshops and webinars!</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

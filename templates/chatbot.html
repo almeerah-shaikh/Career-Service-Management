@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Interview AI Chatbot - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem; text-align: center;">
+    <h1 style="color: var(--charcoal);">AI <span class="mint-text">Interview Chatbot</span></h1>
+    <p style="opacity: 0.8; max-width: 700px; margin: 0.5rem auto;">Ask our career assistant anything about your resume, interview preparation, or professional skills.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: 2fr 1fr; align-items: start;">
+    <div class="card" style="height: 600px; display: flex; flex-direction: column; padding: 0;">
+        <div class="chat-header" style="padding: 1.5rem; background: var(--charcoal); color: white; border-radius: 15px 15px 0 0; display: flex; align-items: center; gap: 1rem;">
+            <i class="fas fa-robot fa-2x" style="color: var(--mint);"></i>
+            <div>
+                <h3 style="margin-bottom: 0; color: white;">Assistant</h3>
+                <p style="font-size: 0.8rem; color: var(--mint);">AI-Powered Career Expert</p>
+            </div>
+            <a href="/clear_chat" style="margin-left: auto; font-size: 0.8rem; color: var(--white); opacity: 0.6; text-decoration: underline;">Clear Chat</a>
+        </div>
+        
+        <div class="chat-messages" id="chat-box" style="flex: 1; padding: 1.5rem; overflow-y: auto; background: #fff; display: flex; flex-direction: column; gap: 1.2rem; scroll-behavior: smooth;">
+            <div class="message bot" style="background: var(--light-gray); color: var(--charcoal); align-self: flex-start; padding: 1rem 1.5rem; border-radius: 20px 20px 20px 0; max-width: 80%; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                Hello! I'm your CareerbyAL Mentor. How can I help you today?
+            </div>
+            
+            {% for chat in history %}
+                {% if chat.role == 'user' %}
+                    <div class="message user" style="background: var(--charcoal); color: var(--mint); align-self: flex-end; padding: 1rem 1.5rem; border-radius: 20px 20px 0 20px; max-width: 80%; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        {{ chat.text }}
+                    </div>
+                {% else %}
+                    <div class="message bot" style="background: white; color: var(--charcoal); align-self: flex-start; padding: 1rem 1.5rem; border: 1px solid #eee; border-radius: 20px 20px 20px 0; max-width: 80%; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        {{ chat.text }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div id="typing-indicator" style="display: none; font-size: 0.8rem; color: #888; font-style: italic; margin-left: 1rem;">Mentor is thinking...</div>
+        </div>
+
+        <!-- Quick Reply Chips -->
+        <div id="quick-replies" style="padding: 1rem; display: flex; gap: 0.6rem; flex-wrap: wrap; background: #fafafa; border-top: 1px solid #f0f0f0;">
+            <button type="button" class="chip" onclick="sendQuick('Give me 3 Resume Tips')">📝 Resume Tips</button>
+            <button type="button" class="chip" onclick="sendQuick('How to ace an Interview?')">🎤 Interview Prep</button>
+            <button type="button" class="chip" onclick="sendQuick('What skills are in demand?')">💡 Skills Advice</button>
+        </div>
+        
+        <div class="chat-input" style="padding: 1.5rem; border-top: 1px solid #f0f0f0;">
+            <form id="chat-form" method="POST" style="display: flex; gap: 0.8rem;">
+                <input type="text" id="msg-input" name="message" placeholder="Ask your Career Mentor..." required style="margin-bottom: 0; padding: 1rem; flex: 1; border-radius: 30px; font-size: 0.95rem; border: 1px solid #ddd;">
+                <button type="submit" class="btn" style="padding: 1rem 2rem; border-radius: 30px;"><i class="fas fa-paper-plane"></i> Ask</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card" style="border-top: 5px solid var(--fuchsia);">
+        <h3 style="margin-bottom: 2rem;"><i class="fas fa-lightbulb" style="color: var(--fuchsia);"></i> Try Asking:</h3>
+        <ul style="padding-left: 0;">
+            <li style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+                <p style="font-weight: 700; color: var(--charcoal); margin-bottom: 0.3rem;">Resume Advice</p>
+                <p style="font-size: 0.85rem; opacity: 0.7;">"Tell me about some resume tips."</p>
+            </li>
+            <li style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+                <p style="font-weight: 700; color: var(--charcoal); margin-bottom: 0.3rem;">Interview Prep</p>
+                <p style="font-size: 0.85rem; opacity: 0.7;">"How should I prepare for an interview?"</p>
+            </li>
+            <li style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+                <p style="font-weight: 700; color: var(--charcoal); margin-bottom: 0.3rem;">Soft Skills</p>
+                <p style="font-size: 0.85rem; opacity: 0.7;">"What are some important skills to learn?"</p>
+            </li>
+        </ul>
+        
+        <div style="background: var(--light-gray); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 1px dashed var(--mint);">
+            <p style="font-size: 0.8rem; font-weight: 600; text-align: center; color: var(--charcoal);">Need a human counselor?</p>
+            <a href="/appointments" class="btn" style="width: 100%; margin-top: 1rem; font-size: 0.85rem; border-radius: 8px;">Book Appointment</a>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .chip {
+        background: white;
+        border: 1px solid var(--mint);
+        color: var(--charcoal);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .chip:hover {
+        background: var(--mint);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(62,180,137,0.3);
+    }
+    
+    /* Animation for messages */
+    .message {
+        animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const chatForm = document.getElementById('chat-form');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    function scrollToBottom() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Scroll on load
+    window.onload = scrollToBottom;
+
+    // Quick Reply Function
+    function sendQuick(msg) {
+        document.getElementById('msg-input').value = msg;
+        chatForm.submit();
+    }
+
+    // Show typing on submit
+    chatForm.onsubmit = () => {
+        typingIndicator.style.display = 'block';
+        scrollToBottom();
+    };
+</script>
+{% endblock %}

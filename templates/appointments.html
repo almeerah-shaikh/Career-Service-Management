@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Counseling Appointments - CareerbyAL{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1 style="color: var(--charcoal);">Counseling <span class="mint-text">Appointments</span></h1>
+    <p style="opacity: 0.8;">Book a one-on-one session with our career experts to discuss your goals and path.</p>
+</div>
+
+<div class="cards" style="grid-template-columns: 1fr 2fr; align-items: start;">
+    <div class="card" style="border-top: 5px solid var(--fuchsia);">
+        <h3 style="margin-bottom: 2rem;"><i class="fas fa-calendar-plus" style="color: var(--fuchsia);"></i> Book a Session</h3>
+        <form method="POST">
+            <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Select Date</label>
+                <input type="date" name="date" required style="border-radius: 8px;">
+            </div>
+            
+            <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Select Time Slot</label>
+                <input type="time" name="time" required style="border-radius: 8px;">
+            </div>
+            
+            <div class="form-group" style="text-align: left; margin-bottom: 1.5rem;">
+                <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Message / Topic</label>
+                <textarea name="message" placeholder="E.g. I need help with my resume and choice of internship." required style="height: 120px; border-radius: 8px;"></textarea>
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%; border-radius: 10px; padding: 1rem;">Confirm Booking</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 2rem;"><i class="fas fa-history" style="color: var(--mint);"></i> Booking History</h3>
+        
+        <div class="table-container" style="overflow-x: auto;">
+            {% if appointments %}
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #f0f0f0;">
+                            <th style="padding: 1rem 0.5rem;">Date</th>
+                            <th style="padding: 1rem 0.5rem;">Time</th>
+                            <th style="padding: 1rem 0.5rem;">Message</th>
+                            <th style="padding: 1rem 0.5rem;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                            <tr style="border-bottom: 1px solid #f9f9f9;">
+                                <td style="padding: 1.2rem 0.5rem; font-weight: 600;">{{ appointment.date }}</td>
+                                <td style="padding: 1.2rem 0.5rem;">{{ appointment.time }}</td>
+                                <td style="padding: 1.2rem 0.5rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ appointment.message }}</td>
+                                <td style="padding: 1.2rem 0.5rem;">
+                                    {% if appointment.status == 'Approved' and appointment.meeting_link %}
+                                        <a href="{{ appointment.meeting_link }}" target="_blank" class="btn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; border-radius: 5px;"><i class="fas fa-video"></i> Join Session</a>
+                                    {% elif appointment.status == 'Pending' %}
+                                        <span class="status-pill status-under-review">Pending</span>
+                                    {% elif appointment.status == 'Approved' %}
+                                        <span class="status-pill status-shortlisted">Approved</span>
+                                    {% elif appointment.status == 'Rejected' %}
+                                        <span class="status-pill status-rejected">Rejected</span>
+                                    {% else %}
+                                        <span class="status-pill status-applied">{{ appointment.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div style="text-align: center; padding: 4rem 0; opacity: 0.5;">
+                    <i class="fas fa-calendar-times fa-3x" style="margin-bottom: 1rem;"></i>
+                    <p>No appointments found yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

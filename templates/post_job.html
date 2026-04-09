@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Post New Job - CareerbyAL{% endblock %}
+
+{% block content %}
+<div class="form-box" style="max-width: 800px; border-top: 5px solid var(--mint);">
+    <h2 style="margin-bottom: 2rem; color: var(--charcoal);"><i class="fas fa-plus-circle"></i> Post New <span class="mint-text">Job Opportunity</span></h2>
+    
+    <form method="POST">
+        <div class="profile-form-grid">
+            <div class="form-group">
+                <label>Job Title</label>
+                <input type="text" name="title" placeholder="E.g. Junior Web Developer" required>
+            </div>
+            <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" name="company" placeholder="E.g. Tech Solutions Inc." required>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="location" placeholder="E.g. Remote / New York" required>
+            </div>
+            <div class="form-group">
+                <label>Application Deadline</label>
+                <input type="date" name="deadline" required>
+            </div>
+        </div>
+        
+        <div class="form-group" style="margin-top: 1rem;">
+            <label>Required Skills <span style="font-weight: 300; font-size: 0.8rem;">(Comma separated)</span></label>
+            <input type="text" name="skills_required" placeholder="E.g. Python, Flask, CSS, SQL" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Detailed Job Description</label>
+            <textarea name="description" placeholder="Describe the role, responsibilities, and benefits..." required style="height: 200px;"></textarea>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn" style="flex: 2; border-radius: 8px;">Publish Job Listing</button>
+            <a href="/admin_dashboard" class="btn register-btn" style="flex: 1; text-align: center; border-radius: 8px;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .profile-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .form-group { text-align: left; margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--charcoal); opacity: 0.8; }
+</style>
+{% endblock %}
